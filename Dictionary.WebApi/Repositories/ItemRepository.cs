@@ -19,7 +19,7 @@ namespace Dictionary.WebApi.Repositories
             string query = @"SELECT 
                             id,
                             key,
-                            value,
+                            content,
                             expires_at,
                             expiration_period
                             FROM items";

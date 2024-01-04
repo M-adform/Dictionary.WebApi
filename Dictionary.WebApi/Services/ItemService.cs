@@ -22,7 +22,7 @@ namespace Dictionary.WebApi.Services
             //if doesn't exist - create new
             //when created - return expiration period
             //when creating user inputs expiration period?
-            int defaultExpirationInSeconds = _configuration.GetValue<int>("AppConfig:ExpirationPeriodInSeconds");
+            int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
             int expirationPeriod;
             if (newItem.ExpirationPeriodInSeconds.HasValue && newItem.ExpirationPeriodInSeconds <= defaultExpirationInSeconds)
             {

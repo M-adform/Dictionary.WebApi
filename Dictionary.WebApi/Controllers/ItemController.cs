@@ -1,4 +1,5 @@
-﻿using Dictionary.WebApi.Models.DTOs.RequestDTOs;
+﻿using Dictionary.WebApi.Interfaces;
+using Dictionary.WebApi.Models.DTOs.RequestDTOs;
 using Dictionary.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,8 +9,8 @@ namespace Dictionary.WebApi.Controllers
     [Route("item")]
     public class ItemController : ControllerBase
     {
-        private readonly ItemService _itemService;
-        public ItemController(ItemService itemService)
+        private readonly IItemService _itemService;
+        public ItemController(IItemService itemService)
         {
             _itemService = itemService;
         }
