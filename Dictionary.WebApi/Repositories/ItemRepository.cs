@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dictionary.WebApi.Interfaces;
+using Dictionary.WebApi.Models.DTOs.RequestDTOs;
 using Dictionary.WebApi.Models.Entities;
 using System.Data;
 
@@ -34,6 +35,13 @@ namespace Dictionary.WebApi.Repositories
             var queryArguments = new { id };
 
             await _dbConnection.ExecuteAsync(query, queryArguments);
+        }
+        public async Task CreateItemAsync(Item item)
+        {
+            string query = @"INSERT INTO items (key, content, expires_at, expiration_period)
+                            VALUES (@Key, @Content, @ExpiresAt, @ExpirationPeriod)";
+            await _dbConnection.ExecuteAsync(query, new 
+            { item.Id, item.Key, item.Content, item.ExpirationPeriod, item.ExpiresAt });
         }
     }
 }

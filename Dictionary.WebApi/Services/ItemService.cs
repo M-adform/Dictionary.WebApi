@@ -40,6 +40,8 @@ namespace Dictionary.WebApi.Services
                 ExpiresAt = DateTime.UtcNow.AddSeconds(expirationPeriod)
             };
 
+            await _repository.CreateItemAsync(entity);
+
         }
             
         public async Task CleanupAsync()

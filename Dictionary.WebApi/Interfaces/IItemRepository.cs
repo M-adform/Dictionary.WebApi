@@ -6,5 +6,6 @@ namespace Dictionary.WebApi.Interfaces
     {
         Task<List<Item>> GetItemsAsync();
         Task DeleteItemsAsync(int id);
+        Task CreateItemAsync(Item item);
     }
 }
