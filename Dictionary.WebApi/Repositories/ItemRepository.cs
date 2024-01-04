@@ -57,5 +57,11 @@ namespace Dictionary.WebApi.Repositories
             await _dbConnection.ExecuteAsync(query, new 
             { item.Id, item.Key, item.Content, item.ExpirationPeriod, item.ExpiresAt });
         }
+        public async Task OverrideContentValue(Item item)
+        {
+            string query = @"UPDATE items SET content = @Content WHERE key = @Key";
+            var queryArguments = new { Content = item.Content, Key = item.Key };
+            await _dbConnection.ExecuteAsync(query, queryArguments);
+        }
     }
 }
