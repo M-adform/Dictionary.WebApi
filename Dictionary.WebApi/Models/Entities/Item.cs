@@ -4,7 +4,9 @@
     {
         public string Key { get; set; }
 
-        public List<object> Content { get; set; }
+        public string Content { get; set; }
+
+        public int ExpirationPeriod { get; set; }
 
         public DateTime ExpirationDate { get; set; }
     }
