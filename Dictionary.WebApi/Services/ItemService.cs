@@ -1,7 +1,7 @@
 ﻿using Dictionary.WebApi.Models.DTOs.RequestDTOs;
 using Dictionary.WebApi.Models.Entities;
-using Newtonsoft.Json;
 ﻿using Dictionary.WebApi.Interfaces;
+using System.Text.Json;
 
 
 namespace Dictionary.WebApi.Services
@@ -35,9 +35,9 @@ namespace Dictionary.WebApi.Services
             var entity = new Item
             {
                 Key = newItem.Key,
-                Content = JsonConvert.SerializeObject(newItem.Content),
+                Content = JsonSerializer.Serialize(newItem.Content),
                 ExpirationPeriod = expirationPeriod,
-                ExpirationDate = DateTime.UtcNow.AddSeconds(expirationPeriod)
+                ExpiresAt = DateTime.UtcNow.AddSeconds(expirationPeriod)
             };
 
         }
