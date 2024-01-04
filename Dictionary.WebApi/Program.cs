@@ -2,6 +2,7 @@ using DbUp;
 using Dictionary.WebApi.Interfaces;
 using Dictionary.WebApi.Repositories;
 using Dictionary.WebApi.Services;
+using ItemStore.WebApi.csproj.Middlewares;
 using Npgsql;
 using System.Data;
 using System.Reflection;
@@ -44,5 +45,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.Run();

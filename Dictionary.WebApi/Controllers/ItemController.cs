@@ -1,6 +1,5 @@
 ﻿using Dictionary.WebApi.Interfaces;
 using Dictionary.WebApi.Models.DTOs.RequestDTOs;
-using Dictionary.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dictionary.WebApi.Controllers
@@ -10,15 +9,23 @@ namespace Dictionary.WebApi.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemService _itemService;
+
         public ItemController(IItemService itemService)
         {
             _itemService = itemService;
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(ItemRequest newItem)
         {
             await _itemService.Create(newItem);
             return Created();
+        }
+
+        [HttpGet("{key}")]
+        public async Task<IActionResult> GetItemByKey(string key)
+        {
+            return Ok(await _itemService.GetItemByKeyAsync(key));
         }
     }
 }
