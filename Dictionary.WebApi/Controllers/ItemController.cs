@@ -20,5 +20,11 @@ namespace Dictionary.WebApi.Controllers
             await _itemService.Create(newItem);
             return Ok();
         }
+        [HttpPost("append")]
+        public async Task<IActionResult> Append(AppendItem itemDto)
+        {
+            await _itemService.AppendItem(itemDto);
+            return NoContent();
+        }
     }
 }

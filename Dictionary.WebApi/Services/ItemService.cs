@@ -2,6 +2,7 @@
 using Dictionary.WebApi.Models.Entities;
 ﻿using Dictionary.WebApi.Interfaces;
 using System.Text.Json;
+using Dictionary.WebApi.Repositories;
 
 
 namespace Dictionary.WebApi.Services
@@ -50,6 +51,41 @@ namespace Dictionary.WebApi.Services
             {
                 if (item.ExpiresAt < DateTime.Now)
                     await _repository.DeleteItemsAsync(item.Id);
+            }
+        }
+
+        public async Task AppendItem(AppendItem itemDto)
+        {
+            var existingItem = await _repository.GetItemByKeyAsync(itemDto.Key!);
+
+            if (existingItem != null)
+            {
+                var contentList = JsonSerializer.Deserialize<List<object>>(existingItem.Content) ?? new List<object>();
+
+                contentList.Add(itemDto.ContentToAppend!);
+
+                existingItem.Content = JsonSerializer.Serialize(contentList);
+
+                existingItem.ExpirationPeriod = itemDto.ExpirationPeriod;
+                existingItem.ExpiresAt = DateTime.UtcNow.AddSeconds(itemDto.ExpirationPeriod ?? 0);
+
+                await _repository.UpdateItemAsync(existingItem!);
+            }
+            else
+            {
+                var newContentList = new List<object> { itemDto.ContentToAppend! };
+
+                string newContent = JsonSerializer.Serialize(newContentList);
+
+                var newItem = new Item
+                {
+                    Key = itemDto.Key!,
+                    Content = newContent,
+                    ExpirationPeriod = itemDto.ExpirationPeriod,
+                    ExpiresAt = DateTime.UtcNow.AddDays(itemDto.ExpirationPeriod ?? 0)
+                };
+
+                await _repository.InsertItemAsync(newItem!);
             }
         }
     }
