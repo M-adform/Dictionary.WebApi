@@ -29,6 +29,20 @@ namespace Dictionary.WebApi.Repositories
             return items.ToList();
         }
 
+        public async Task<Item> GetItem(string Key)
+        {
+            string query = @"SELECT 
+                            id,
+                            key,
+                            content,
+                            expires_at,
+                            expiration_period
+                            FROM items
+                            WHERE key = @Key";
+            var item = await _dbConnection.QuerySingleOrDefaultAsync(query, new {Key});
+            return item;
+        }
+
         public async Task DeleteItemsAsync(int id)
         {
             string query = @"DELETE FROM items WHERE id = @id;";
