@@ -18,7 +18,7 @@ namespace Dictionary.WebApi.Controllers
         public async Task<IActionResult> Create(ItemRequest newItem)
         {
             await _itemService.Create(newItem);
-            return Ok();
+            return Created();
         }
     }
 }

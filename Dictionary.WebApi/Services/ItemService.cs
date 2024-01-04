@@ -18,10 +18,6 @@ namespace Dictionary.WebApi.Services
         }
         public async Task Create(ItemRequest newItem)
         {
-            //if key exists - override value
-            //if doesn't exist - create new
-            //when created - return expiration period
-            //when creating user inputs expiration period?
             int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
             int expirationPeriod;
             if (newItem.ExpirationPeriodInSeconds.HasValue && newItem.ExpirationPeriodInSeconds <= defaultExpirationInSeconds)
@@ -32,6 +28,7 @@ namespace Dictionary.WebApi.Services
             {
                 expirationPeriod = defaultExpirationInSeconds;
             }
+            var existingItem = await _repository.GetItemByKeyAsync(newItem.Key);
             var entity = new Item
             {
                 Key = newItem.Key,
@@ -39,6 +36,15 @@ namespace Dictionary.WebApi.Services
                 ExpirationPeriod = expirationPeriod,
                 ExpiresAt = DateTime.UtcNow.AddSeconds(expirationPeriod)
             };
+            if (existingItem is null)
+            {
+                await _repository.CreateItemAsync(entity);
+            }
+            else
+            {
+                await _repository.OverrideContentValue(entity);
+            }
+
 
         }
             
