@@ -24,7 +24,7 @@ namespace Dictionary.WebApi.Services
             //when creating user inputs expiration period?
             int defaultExpirationInSeconds = _configuration.GetValue<int>("AppConfig:ExpirationPeriodInSeconds");
             int expirationPeriod;
-            if(newItem.ExpirationPeriodInSeconds.HasValue && newItem.ExpirationPeriodInSeconds <= defaultExpirationInSeconds)
+            if (newItem.ExpirationPeriodInSeconds.HasValue && newItem.ExpirationPeriodInSeconds <= defaultExpirationInSeconds)
             {
                 expirationPeriod = (int)newItem.ExpirationPeriodInSeconds;
             }
@@ -39,6 +39,8 @@ namespace Dictionary.WebApi.Services
                 ExpirationPeriod = expirationPeriod,
                 ExpirationDate = DateTime.UtcNow.AddSeconds(expirationPeriod)
             };
+
+        }
             
         public async Task CleanupAsync()
         {
