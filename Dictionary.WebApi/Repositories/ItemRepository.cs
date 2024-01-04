@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Dictionary.WebApi.Interfaces;
+using Dictionary.WebApi.Models.DTOs.RequestDTOs;
 using Dictionary.WebApi.Models.Entities;
 using System.Data;
 
@@ -26,6 +27,20 @@ namespace Dictionary.WebApi.Repositories
 
             var items = await _dbConnection.QueryAsync<Item>(query);
             return items.ToList();
+        }
+
+        public async Task<Item> GetItem(string Key)
+        {
+            string query = @"SELECT 
+                            id,
+                            key,
+                            content,
+                            expires_at,
+                            expiration_period
+                            FROM items
+                            WHERE key = @Key";
+            var item = await _dbConnection.QuerySingleOrDefaultAsync(query, new {Key});
+            return item;
         }
 
         public async Task DeleteItemsAsync(int id)
@@ -69,6 +84,14 @@ namespace Dictionary.WebApi.Repositories
                         WHERE key = @Key";
 
             var queryArguments = new { item.Content, item.ExpirationPeriod, item.ExpiresAt, item.Key };
+            await _dbConnection.ExecuteAsync(query, new 
+            { item.Id, item.Key, item.Content, item.ExpirationPeriod, item.ExpiresAt });
+        }
+        
+        public async Task OverrideContentValue(Item item)
+        {
+            string query = @"UPDATE items SET content = @Content WHERE key = @Key";
+            var queryArguments = new { Content = item.Content, Key = item.Key };
             await _dbConnection.ExecuteAsync(query, queryArguments);
         }
     }

@@ -10,5 +10,7 @@ namespace Dictionary.WebApi.Interfaces
         Task<Item?> GetItemByKeyAsync(string key);
         Task OverrideContentValue(Item item);
         Task UpdateItemAsync(Item item);
+        Task<Item> GetItem(string Key);
+        Task OverrideContentValue(Item item);
     }
 }
