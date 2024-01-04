@@ -2,7 +2,7 @@
 CREATE TABLE items (
 	id serial PRIMARY KEY,
 	key varchar(255) NOT NULL,
-	value text,
+	content text,
 	expires_at timestamp DEFAULT NOW(),
 	expiration_period int
 );
