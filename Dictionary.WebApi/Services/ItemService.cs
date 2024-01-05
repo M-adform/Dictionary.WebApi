@@ -57,7 +57,7 @@ namespace Dictionary.WebApi.Services
         public async Task AppendItem(AppendItem itemDto)
         {
             var existingItem = await _repository.GetItemByKeyAsync(itemDto.Key!);
-
+            int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
             if (existingItem != null)
             {
                 var contentList = JsonSerializer.Deserialize<List<object>>(existingItem.Content) ?? new List<object>();
@@ -66,8 +66,9 @@ namespace Dictionary.WebApi.Services
 
                 existingItem.Content = JsonSerializer.Serialize(contentList);
 
-                existingItem.ExpirationPeriod = itemDto.ExpirationPeriod;
-                existingItem.ExpiresAt = DateTime.UtcNow.AddSeconds(itemDto.ExpirationPeriod ?? 0);
+                
+                existingItem.ExpirationPeriod = itemDto.ExpirationPeriod ?? defaultExpirationInSeconds;
+                existingItem.ExpiresAt = DateTime.UtcNow.AddSeconds((double)itemDto.ExpirationPeriod!);
 
                 await _repository.UpdateItemAsync(existingItem!);
             }
@@ -81,8 +82,8 @@ namespace Dictionary.WebApi.Services
                 {
                     Key = itemDto.Key!,
                     Content = newContent,
-                    ExpirationPeriod = itemDto.ExpirationPeriod,
-                    ExpiresAt = DateTime.UtcNow.AddDays(itemDto.ExpirationPeriod ?? 0)
+                    ExpirationPeriod = itemDto.ExpirationPeriod ?? defaultExpirationInSeconds,
+                    ExpiresAt = DateTime.UtcNow.AddSeconds((double)itemDto.ExpirationPeriod!)
                 };
 
                 await _repository.InsertItemAsync(newItem!);

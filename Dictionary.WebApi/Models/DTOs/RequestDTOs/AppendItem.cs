@@ -2,8 +2,8 @@
 {
     public class AppendItem
     {
-        public string ?Key { get; set; }
-        public string ?ContentToAppend { get; set; }
+        public string? Key { get; set; }
+        public string? ContentToAppend { get; set; }
         public int? ExpirationPeriod { get; set; }
     }
 }
