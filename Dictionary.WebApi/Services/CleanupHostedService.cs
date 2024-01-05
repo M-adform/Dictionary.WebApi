@@ -5,7 +5,7 @@ namespace Dictionary.WebApi.Services
     public class CleanupHostedService : BackgroundService
     {
         private readonly ILogger<CleanupHostedService> _logger;
-        public IServiceProvider Services { get; }
+        private IServiceProvider Services { get; }
 
         public CleanupHostedService(IServiceProvider services, ILogger<CleanupHostedService> logger)
         {
@@ -18,7 +18,6 @@ namespace Dictionary.WebApi.Services
         {
             _logger.LogInformation("Timed Hosted Service running.");
 
-            // When the timer should have no due-time, then do the work once now.
             await CleanupAsync();
 
             using PeriodicTimer timer = new(TimeSpan.FromSeconds(cleanupRepeatTime));
@@ -42,11 +41,11 @@ namespace Dictionary.WebApi.Services
 
             using (var scope = Services.CreateScope())
             {
-                var scopedItemService =
+                var itemService =
                     scope.ServiceProvider
                         .GetRequiredService<IItemService>();
 
-                await scopedItemService.CleanupAsync();
+                await itemService.CleanupAsync();
             }
         }
     }
