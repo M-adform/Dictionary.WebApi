@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json;
+using FluentAssertions;
 
 
 namespace Dictionary.UnitTests.Services
@@ -70,6 +72,20 @@ namespace Dictionary.UnitTests.Services
             await _service.DeleteItemByKeyAsync("key");
 
             _mockRepository.Verify(x => x.DeleteItemByKeyAsync("key"), Times.Once);
+        }
+
+        [Fact]
+        public async Task Append_ExistingItem_CallsUpdateItemAsync()
+        {
+            var existingContentJson = JsonSerializer.Serialize(new List<object> { "existingContent" });
+            var existingItem = new Item { Key = "existingKey", Content = existingContentJson };
+            var itemAppend = new ItemAppend { Key = "existingKey", ContentToAppend = "newContent" };
+
+            _mockRepository.Setup(x => x.GetItemByKeyAsync("existingKey")).ReturnsAsync(existingItem);
+
+            await _service.Append(itemAppend);
+
+            _mockRepository.Verify(x => x.UpdateItemAsync(It.Is<Item>(item => item.Key == "existingKey")), Times.Once);
         }
     }
 }
