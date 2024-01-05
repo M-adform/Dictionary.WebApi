@@ -6,8 +6,11 @@ namespace Dictionary.WebApi.Interfaces
     {
         Task<List<Item>> GetItemsAsync();
         Task DeleteItemsAsync(int id);
-        public Task<Item?> GetItemByKeyAsync(string key);
-        public Task InsertItemAsync(Item item);
-        public Task UpdateItemAsync(Item item);
+        Task InsertItemAsync(Item item);
+        Task UpdateItemAsync(Item item);
+        Task CreateItemAsync(Item item);
+        Task<Item?> GetItemByKeyAsync(string key);
+        Task OverrideContentValue(Item item);
+        Task<Item> GetItem(string Key);
     }
 }

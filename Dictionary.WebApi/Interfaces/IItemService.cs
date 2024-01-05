@@ -6,7 +6,7 @@ namespace Dictionary.WebApi.Interfaces
     {
         Task CleanupAsync();
         Task Create(ItemRequest newItem);
-        public Task AppendItem(AppendItem itemDto);
-
+        Task AppendItem(AppendItem itemDto);
+        Task<List<object>?> GetItemByKeyAsync(string key);
     }
 }
