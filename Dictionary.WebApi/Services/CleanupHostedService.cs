@@ -5,22 +5,25 @@ namespace Dictionary.WebApi.Services
     public class CleanupHostedService : BackgroundService
     {
         private readonly ILogger<CleanupHostedService> _logger;
+        private readonly IConfiguration _configuration;
         private IServiceProvider Services { get; }
+        int defaultCleanupInSeconds;
 
-        public CleanupHostedService(IServiceProvider services, ILogger<CleanupHostedService> logger)
+        public CleanupHostedService(IServiceProvider services, ILogger<CleanupHostedService> logger, IConfiguration configuration)
         {
             Services = services;
             _logger = logger;
+            _configuration = configuration;
+            defaultCleanupInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultCleanupValue");
         }
 
-        int cleanupRepeatTime = 5;
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Timed Hosted Service running.");
 
             await CleanupAsync();
 
-            using PeriodicTimer timer = new(TimeSpan.FromSeconds(cleanupRepeatTime));
+            using PeriodicTimer timer = new(TimeSpan.FromSeconds(defaultCleanupInSeconds));
 
             try
             {
@@ -37,8 +40,6 @@ namespace Dictionary.WebApi.Services
 
         private async Task CleanupAsync()
         {
-            _logger.LogInformation("Consume Scoped Service Hosted Service is working.");
-
             using (var scope = Services.CreateScope())
             {
                 var itemService =
