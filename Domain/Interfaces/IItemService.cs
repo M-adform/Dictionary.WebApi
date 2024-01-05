@@ -1,6 +1,6 @@
-﻿using Dictionary.WebApi.Models.DTOs.RequestDTOs;
+﻿using Domain.Models.DTOs.RequestDTOs;
 
-namespace Dictionary.WebApi.Interfaces
+namespace Domain.Interfaces
 {
     public interface IItemService
     {

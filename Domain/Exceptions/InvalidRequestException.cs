@@ -1,4 +1,4 @@
-﻿namespace Bank.WebApi.Exceptions
+﻿namespace Domain.Exceptions
 {
     public class InvalidRequestException : Exception
     {

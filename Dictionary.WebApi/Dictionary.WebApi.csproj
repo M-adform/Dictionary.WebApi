@@ -21,10 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.28" />
+	    <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="dbup" Version="5.0.37" />
     <PackageReference Include="dbup-postgresql" Version="5.0.37" />
-    <PackageReference Include="Npgsql" Version="8.0.1" />
+    <PackageReference Include="Npgsql" Version="8.0.1" />	  <PackageReference Include="Dapper" Version="2.1.28" />
+	  <PackageReference Include="dbup" Version="5.0.37" />
+	  <PackageReference Include="dbup-postgresql" Version="5.0.37" />
+	  
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

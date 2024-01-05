@@ -1,6 +1,10 @@
-﻿using Dictionary.WebApi.Interfaces;
+﻿using Domain.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace Dictionary.WebApi.Services
+namespace Infrastructure.Services
 {
     public class CleanupHostedService : BackgroundService
     {

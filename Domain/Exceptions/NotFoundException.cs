@@ -1,4 +1,4 @@
-﻿namespace ItemStore.WebApi.csproj.Exceptions
+﻿namespace Domain.Exceptions
 {
     public class NotFoundException : Exception
     {
