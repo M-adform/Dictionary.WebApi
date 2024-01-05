@@ -6,8 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>54e30141-7bc8-4f83-8d93-223a6ec3b3fa</UserSecretsId>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
+	
+	
   <ItemGroup>
     <None Remove="Scripts\script.sql" />
   </ItemGroup>
@@ -21,7 +25,7 @@
     <PackageReference Include="dbup" Version="5.0.37" />
     <PackageReference Include="dbup-postgresql" Version="5.0.37" />
     <PackageReference Include="Npgsql" Version="8.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
 </Project>
