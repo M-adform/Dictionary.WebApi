@@ -4,6 +4,7 @@ using Dictionary.WebApi.Models.Entities;
 using ItemStore.WebApi.csproj.Exceptions;
 using System.Text.Json;
 using Dictionary.WebApi.Repositories;
+using Dictionary.WebApi.Helpers;
 
 
 namespace Dictionary.WebApi.Services
@@ -12,34 +13,29 @@ namespace Dictionary.WebApi.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IItemRepository _repository;
+        private readonly UpdateExpiresAtAndExpirationPeriod _updateExpiration;
 
-        public ItemService(IConfiguration configuration, IItemRepository repository)
+        public ItemService(IConfiguration configuration, IItemRepository repository, UpdateExpiresAtAndExpirationPeriod updateExpiration)
         {
             _configuration = configuration;
             _repository = repository;
+            _updateExpiration = updateExpiration;
 
         }
 
         public async Task Create(ItemRequest newItem)
         {
-            int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
-            int expirationPeriod;
-            if (newItem.ExpirationPeriodInSeconds.HasValue && newItem.ExpirationPeriodInSeconds <= defaultExpirationInSeconds)
-            {
-                expirationPeriod = (int)newItem.ExpirationPeriodInSeconds;
-            }
-            else
-            {
-                expirationPeriod = defaultExpirationInSeconds;
-            }
+            int expirationPeriod = _updateExpiration.GetValidExpirationPeriod(_configuration, newItem.ExpirationPeriodInSeconds);
             var existingItem = await _repository.GetItemByKeyAsync(newItem.Key);
+
             var entity = new Item
             {
                 Key = newItem.Key,
                 Content = JsonSerializer.Serialize(newItem.Content),
                 ExpirationPeriod = expirationPeriod,
-                ExpiresAt = DateTime.UtcNow.AddSeconds(expirationPeriod)
+                ExpiresAt = _updateExpiration.UpdateExpirationTime(expirationPeriod)
             };
+
             if (existingItem is null)
             {
                 await _repository.CreateItemAsync(entity);
@@ -74,7 +70,7 @@ namespace Dictionary.WebApi.Services
 
                 existingItem.Content = JsonSerializer.Serialize(contentList);
 
-                
+
                 existingItem.ExpirationPeriod = itemDto.ExpirationPeriod ?? defaultExpirationInSeconds;
                 existingItem.ExpiresAt = DateTime.UtcNow.AddSeconds((double)itemDto.ExpirationPeriod!);
 
@@ -96,7 +92,7 @@ namespace Dictionary.WebApi.Services
 
                 await _repository.InsertItemAsync(newItem!);
             }
-    }
+        }
         public async Task<List<object>?> GetItemByKeyAsync(string key)
         {
             var item = await _repository.GetItemByKeyAsync(key) ?? throw new NotFoundException();
@@ -106,5 +102,7 @@ namespace Dictionary.WebApi.Services
 
             var content = JsonSerializer.Deserialize<List<object>>(item.Content);
             return content;
-        }        
+        }
+
+    }
 }
