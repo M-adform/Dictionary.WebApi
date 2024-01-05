@@ -54,18 +54,23 @@ namespace Dictionary.WebApi.Repositories
         public async Task<Item?> GetItemByKeyAsync(string key)
         {
             string query = @"SELECT 
-                            id,
-                            key,
-                            content,
-                            expires_at,
-                            expiration_period
-                            FROM items WHERE key = @key";
+                    id,
+                    key,
+                    content,
+                    expires_at,
+                    expiration_period
+                    FROM items WHERE key = @key";
 
             var queryArguments = new { key };
 
             return await _dbConnection.QueryFirstOrDefaultAsync<Item>(query, queryArguments);
         }
 
+        public async Task InsertItemAsync(Item item)
+        {
+            var sql = "INSERT INTO items (key, content, expiration_period, expires_at) VALUES (@Key, @Content, @ExpirationPeriod, @ExpiresAt)";
+            var queryArguments = new { item.Content, item.ExpirationPeriod, item.ExpiresAt, item.Key };
+            await _dbConnection.ExecuteAsync(sql, queryArguments);
         public async Task CreateItemAsync(Item item)
         {
             string query = @"INSERT INTO items (key, content, expires_at, expiration_period)
