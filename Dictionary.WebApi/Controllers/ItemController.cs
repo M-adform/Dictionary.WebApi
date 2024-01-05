@@ -27,10 +27,18 @@ namespace Dictionary.WebApi.Controllers
         {
             return Ok(await _itemService.GetItemByKeyAsync(key));
         }
+
         [HttpPost("append")]
         public async Task<IActionResult> Append(AppendItem itemDto)
         {
             await _itemService.AppendItem(itemDto);
+            return NoContent();
+        }
+
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> DeleteItemByKey(string key)
+        {
+            await _itemService.DeleteItemByKeyAsync(key);
             return NoContent();
         }
     }
