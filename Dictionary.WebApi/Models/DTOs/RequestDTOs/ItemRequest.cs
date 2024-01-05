@@ -7,6 +7,8 @@ namespace Dictionary.WebApi.Models.DTOs.RequestDTOs
         [Required(ErrorMessage = "Key is required")]
         public string Key { get; set; }
         public List<object>? Content { get; set; }
+
+        [System.ComponentModel.DefaultValue(null)]
         public int? ExpirationPeriodInSeconds { get; set; }
     }
 }
