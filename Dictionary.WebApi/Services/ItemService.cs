@@ -4,7 +4,6 @@ using Dictionary.WebApi.Models.Entities;
 using ItemStore.WebApi.csproj.Exceptions;
 using System.Text.Json;
 using Dictionary.WebApi.Repositories;
-using Dictionary.WebApi.Helpers;
 
 
 namespace Dictionary.WebApi.Services
@@ -13,19 +12,16 @@ namespace Dictionary.WebApi.Services
     {
         private readonly IConfiguration _configuration;
         private readonly IItemRepository _repository;
-        private readonly UpdateExpiresAtAndExpirationPeriod _updateExpiration;
 
-        public ItemService(IConfiguration configuration, IItemRepository repository, UpdateExpiresAtAndExpirationPeriod updateExpiration)
+        public ItemService(IConfiguration configuration, IItemRepository repository)
         {
             _configuration = configuration;
             _repository = repository;
-            _updateExpiration = updateExpiration;
-
         }
 
         public async Task Create(ItemRequest newItem)
         {
-            int expirationPeriod = _updateExpiration.GetValidExpirationPeriod(_configuration, newItem.ExpirationPeriodInSeconds);
+            int expirationPeriod = CalculateExpirationPeriod(newItem.ExpirationPeriodInSeconds);
             var existingItem = await _repository.GetItemByKeyAsync(newItem.Key);
 
             var entity = new Item
@@ -33,7 +29,7 @@ namespace Dictionary.WebApi.Services
                 Key = newItem.Key,
                 Content = JsonSerializer.Serialize(newItem.Content),
                 ExpirationPeriod = expirationPeriod,
-                ExpiresAt = _updateExpiration.UpdateExpirationTime(expirationPeriod)
+                ExpiresAt = DateTime.UtcNow.AddSeconds(expirationPeriod),
             };
 
             if (existingItem is null)
@@ -103,6 +99,19 @@ namespace Dictionary.WebApi.Services
             var content = JsonSerializer.Deserialize<List<object>>(item.Content);
             return content;
         }
+        private int CalculateExpirationPeriod(int? expirationPeriod)
+        {
+            int defaultExpirationPeriod = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
+            if (expirationPeriod.HasValue && expirationPeriod <= defaultExpirationPeriod)
+            {
+                return expirationPeriod.Value;
+            }
+            else
+            {
+                return defaultExpirationPeriod;
+            }
+        }
 
     }
+
 }
