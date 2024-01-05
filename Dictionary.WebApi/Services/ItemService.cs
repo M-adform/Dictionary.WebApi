@@ -59,7 +59,7 @@ namespace Dictionary.WebApi.Services
             }
         }
 
-        public async Task AppendItem(AppendItem itemDto)
+        public async Task Append(ItemAppend itemDto)
         {
             var existingItem = await _repository.GetItemByKeyAsync(itemDto.Key!);
             int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
