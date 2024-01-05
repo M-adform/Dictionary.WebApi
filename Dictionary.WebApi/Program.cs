@@ -1,4 +1,5 @@
 using DbUp;
+using Dictionary.WebApi.Helpers;
 using Dictionary.WebApi.Interfaces;
 using Dictionary.WebApi.Repositories;
 using Dictionary.WebApi.Services;
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IItemRepository, ItemRepository>();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddHostedService<CleanupHostedService>();
+builder.Services.AddTransient<UpdateExpiresAtAndExpirationPeriod>();
 
 var connectionString = builder.Configuration["MySecrets:PostgreConnection"] ?? throw new ArgumentNullException("Connection string was not found."); ;
 builder.Services.AddTransient<IDbConnection>(sp => new NpgsqlConnection(connectionString));
