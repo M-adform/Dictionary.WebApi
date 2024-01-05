@@ -71,6 +71,7 @@ namespace Dictionary.WebApi.Repositories
             var sql = "INSERT INTO items (key, content, expiration_period, expires_at) VALUES (@Key, @Content, @ExpirationPeriod, @ExpiresAt)";
             var queryArguments = new { item.Content, item.ExpirationPeriod, item.ExpiresAt, item.Key };
             await _dbConnection.ExecuteAsync(sql, queryArguments);
+        }
         public async Task CreateItemAsync(Item item)
         {
             string query = @"INSERT INTO items (key, content, expires_at, expiration_period)

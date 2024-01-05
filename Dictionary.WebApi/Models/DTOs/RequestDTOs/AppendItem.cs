@@ -4,6 +4,8 @@
     {
         public string? Key { get; set; }
         public string? ContentToAppend { get; set; }
+
+        [System.ComponentModel.DefaultValue(null)] 
         public int? ExpirationPeriod { get; set; }
     }
 }
