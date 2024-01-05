@@ -85,10 +85,7 @@ namespace Dictionary.WebApi.Services
                 await _repository.InsertItemAsync(newItem!);
             }
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 1929a3dcbef16d5264aa00def9eae3b3dd754cf7
         public async Task<List<object>?> GetItemByKeyAsync(string key)
         {
             var item = await _repository.GetItemByKeyAsync(key) ?? throw new NotFoundException();
@@ -99,7 +96,7 @@ namespace Dictionary.WebApi.Services
             var content = JsonSerializer.Deserialize<List<object>>(item.Content);
             return content;
         }
-<<<<<<< HEAD
+
         private int CalculateExpirationPeriod(int? expirationPeriod)
         {
             int defaultExpirationPeriod = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
@@ -113,15 +110,11 @@ namespace Dictionary.WebApi.Services
             }
         }
 
-    }
-
-=======
-
         public async Task DeleteItemByKeyAsync(string key)
         {
             _ = await _repository.GetItemByKeyAsync(key) ?? throw new NotFoundException();
+
             await _repository.DeleteItemByKeyAsync(key);
         }
     }
->>>>>>> 1929a3dcbef16d5264aa00def9eae3b3dd754cf7
 }
