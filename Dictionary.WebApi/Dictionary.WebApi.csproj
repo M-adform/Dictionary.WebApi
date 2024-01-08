@@ -1,18 +1,38 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <UserSecretsId>54e30141-7bc8-4f83-8d93-223a6ec3b3fa</UserSecretsId>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
+	
+	
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <None Remove="Scripts\script.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <EmbeddedResource Include="Scripts\script.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+	    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="dbup" Version="5.0.37" />
+    <PackageReference Include="dbup-postgresql" Version="5.0.37" />
+    <PackageReference Include="Npgsql" Version="8.0.1" />	  <PackageReference Include="Dapper" Version="2.1.28" />
+	  <PackageReference Include="dbup" Version="5.0.37" />
+	  <PackageReference Include="dbup-postgresql" Version="5.0.37" />
+	  
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
