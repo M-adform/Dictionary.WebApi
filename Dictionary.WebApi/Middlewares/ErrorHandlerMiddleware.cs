@@ -1,5 +1,4 @@
-﻿using Bank.WebApi.Exceptions;
-using ItemStore.WebApi.csproj.Exceptions;
+﻿using Domain.Exceptions;
 using System.Net;
 using System.Text.Json;
 

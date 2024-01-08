@@ -1,5 +1,5 @@
-﻿using Dictionary.WebApi.Interfaces;
-using Dictionary.WebApi.Models.DTOs.RequestDTOs;
+﻿using Domain.Interfaces;
+using Domain.Models.DTOs.RequestDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dictionary.WebApi.Controllers
