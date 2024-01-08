@@ -34,7 +34,7 @@ namespace Application.Services
 
             if (existingItem is null)
             {
-                await _repository.CreateItemAsync(entity);
+                await _repository.InsertItemAsync(entity);
             }
             else
             {
@@ -57,11 +57,12 @@ namespace Application.Services
         {
             var existingItem = await _repository.GetItemByKeyAsync(itemDto.Key!);
             int defaultExpirationInSeconds = CalculateExpirationPeriod(null);
+
             if (existingItem != null)
             {
-                var contentList = JsonSerializer.Deserialize<List<object>>(existingItem.Content) ?? [];
+                var contentList = JsonSerializer.Deserialize<List<object?>>(existingItem.Content) ?? [];
 
-                contentList.Add(itemDto.ContentToAppend!);
+                contentList.Add(itemDto.ContentToAppend);
 
                 existingItem.Content = JsonSerializer.Serialize(contentList);
 
@@ -71,7 +72,7 @@ namespace Application.Services
             }
             else
             {
-                var newContentList = new List<object> { itemDto.ContentToAppend! };
+                var newContentList = new List<object?> { itemDto.ContentToAppend };
 
                 string newContent = JsonSerializer.Serialize(newContentList);
 
@@ -94,20 +95,19 @@ namespace Application.Services
             item.ExpiresAt = DateTime.UtcNow.AddSeconds(Convert.ToDouble(item.ExpirationPeriod));
             await _repository.UpdateItemAsync(item);
 
-            var content = JsonSerializer.Deserialize<List<object>>(item.Content);
-            return content;
+            return JsonSerializer.Deserialize<List<object>>(item.Content);
         }
+
         private int CalculateExpirationPeriod(int? expirationPeriod)
         {
             int defaultExpirationPeriod = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
+
             if (expirationPeriod.HasValue && expirationPeriod <= defaultExpirationPeriod)
             {
                 return expirationPeriod.Value;
             }
-            else
-            {
-                return defaultExpirationPeriod;
-            }
+
+            return defaultExpirationPeriod;
         }
 
         public async Task DeleteItemByKeyAsync(string key)
@@ -115,7 +115,5 @@ namespace Application.Services
             _ = await _repository.GetItemByKeyAsync(key) ?? throw new NotFoundException();
             await _repository.DeleteItemByKeyAsync(key);
         }
-
     }
-
 }
