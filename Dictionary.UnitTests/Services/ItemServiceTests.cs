@@ -46,14 +46,14 @@ namespace Dictionary.UnitTests.Services
 
             await _service.Create(newItem);
 
-            _mockRepository.Verify(x => x.CreateItemAsync(It.IsAny<Item>()), Times.Once);
+            _mockRepository.Verify(x => x.InsertItemAsync(It.IsAny<Item>()), Times.Once);
         }
 
         [Fact]
         public async Task Create_WhenExistingItem_ShouldOverrideItemAsync()
         {
             var newItem = new ItemRequest { Key = "newKey", Content = new List<object> { new object() }, ExpirationPeriodInSeconds = 3600 };
-            var existingItem = new Item { /* properties set up */ };
+            var existingItem = new Item {};
 
             _mockRepository.Setup(x => x.GetItemByKeyAsync(newItem.Key)).ReturnsAsync(existingItem);
 
