@@ -1,7 +1,4 @@
-﻿using Dictionary.WebApi.Interfaces;
-using Dictionary.WebApi.Models.DTOs.RequestDTOs;
-using Dictionary.WebApi.Models.Entities;
-using Dictionary.WebApi.Services;
+﻿
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -11,6 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using FluentAssertions;
+using Domain.Interfaces;
+using Application.Services;
+using Domain.Models.DTOs.RequestDTOs;
+using Domain.Models.Entities;
 
 
 namespace Dictionary.UnitTests.Services
