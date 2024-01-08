@@ -56,7 +56,7 @@ namespace Application.Services
         public async Task Append(ItemAppend itemDto)
         {
             var existingItem = await _repository.GetItemByKeyAsync(itemDto.Key!);
-            int defaultExpirationInSeconds = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
+            int defaultExpirationInSeconds = CalculateExpirationPeriod(null);
             if (existingItem != null)
             {
                 var contentList = JsonSerializer.Deserialize<List<object>>(existingItem.Content) ?? [];
@@ -97,7 +97,6 @@ namespace Application.Services
             var content = JsonSerializer.Deserialize<List<object>>(item.Content);
             return content;
         }
-
         private int CalculateExpirationPeriod(int? expirationPeriod)
         {
             int defaultExpirationPeriod = _configuration.GetValue<int>("DefaultValues:DefaultExpirationValue");
@@ -114,8 +113,9 @@ namespace Application.Services
         public async Task DeleteItemByKeyAsync(string key)
         {
             _ = await _repository.GetItemByKeyAsync(key) ?? throw new NotFoundException();
-
             await _repository.DeleteItemByKeyAsync(key);
         }
+
     }
+
 }
