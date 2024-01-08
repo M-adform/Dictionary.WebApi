@@ -17,8 +17,7 @@ namespace Dictionary.WebApi.Controllers
 
         /// <summary>
         /// Adds new item
-        /// </summary>
-        ///         
+        /// </summary>     
         /// <remarks>
         /// Adding item without expiration period sets it to default
         /// </remarks>
@@ -37,7 +36,6 @@ namespace Dictionary.WebApi.Controllers
         /// <summary>
         /// Gets an item 
         /// </summary>
-        /// 
         /// <remarks>
         /// Getting item by key updates its expiration date according to expiration period assigned to an item.
         /// </remarks>
@@ -55,7 +53,6 @@ namespace Dictionary.WebApi.Controllers
         /// <summary>
         /// Updates existing item 
         /// </summary>        
-        /// 
         /// <remarks>
         /// If item is not found a new item will be created.
         /// </remarks>
@@ -73,7 +70,7 @@ namespace Dictionary.WebApi.Controllers
         /// <summary>
         /// Deletes item
         /// </summary>
-        /// /// <param name="key">The key to check if an item to delete exists.</param>
+        /// <param name="key">The key to check if an item to delete exists.</param>
         /// <response code="204">Returns nothing if append was successful</response>
         /// <response code="404">Item was not found</response>
         /// <response code="400">Invalid item</response>
