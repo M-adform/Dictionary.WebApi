@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using Dictionary.WebApi.Interfaces;
-using Dictionary.WebApi.Models.Entities;
+using Domain.Interfaces;
+using Domain.Models.Entities;
 using System.Data;
 
-namespace Dictionary.WebApi.Repositories
+namespace Infrastructure.Repositories
 {
     public class ItemRepository : IItemRepository
     {
@@ -82,7 +82,7 @@ namespace Dictionary.WebApi.Repositories
         public async Task OverrideContentValue(Item item)
         {
             string query = @"UPDATE items SET content = @Content WHERE key = @Key";
-            var queryArguments = new { Content = item.Content, Key = item.Key };
+            var queryArguments = new { item.Content, item.Key };
             await _dbConnection.ExecuteAsync(query, queryArguments);
         }
     }

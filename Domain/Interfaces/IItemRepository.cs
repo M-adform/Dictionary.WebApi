@@ -1,6 +1,6 @@
-﻿using Dictionary.WebApi.Models.Entities;
+﻿using Domain.Models.Entities;
 
-namespace Dictionary.WebApi.Interfaces
+namespace Domain.Interfaces
 {
     public interface IItemRepository
     {

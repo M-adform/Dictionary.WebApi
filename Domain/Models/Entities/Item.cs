@@ -1,4 +1,4 @@
-﻿namespace Dictionary.WebApi.Models.Entities
+﻿namespace Domain.Models.Entities
 {
     public class Item
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dictionary.WebApi.Models.DTOs.RequestDTOs
+namespace Domain.Models.DTOs.RequestDTOs
 {
     public class ItemRequest
     {

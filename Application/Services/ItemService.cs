@@ -1,11 +1,12 @@
-﻿using Dictionary.WebApi.Interfaces;
-using Dictionary.WebApi.Models.DTOs.RequestDTOs;
-using Dictionary.WebApi.Models.Entities;
-using ItemStore.WebApi.csproj.Exceptions;
+﻿using Domain.Exceptions;
+using Domain.Interfaces;
+using Domain.Models.DTOs.RequestDTOs;
+using Domain.Models.Entities;
+using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 
-namespace Dictionary.WebApi.Services
+namespace Application.Services
 {
     public class ItemService : IItemService
     {
